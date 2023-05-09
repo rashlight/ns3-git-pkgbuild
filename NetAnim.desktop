@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=NetAnim-git
+Comment=Visualizer for the NS-3 network simulator (git version)
+GenericName=Network Visualizer
+Exec=/usr/include/ns3/netanim/NetAnim %F
+Icon=netanim-logo
+Type=Application
+StartupNotify=true
+StartupWMClass=NetAnim
+Categories=Utility;Development;Programming
+Keywords=netanim;netanim-git;ns3;ns-3;

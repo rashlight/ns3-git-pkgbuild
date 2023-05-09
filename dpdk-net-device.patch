@@ -1,0 +1,43 @@
+--- dpdk-net-device.cc	2023-03-17 10:54:23.000000000 +0700
++++ patches/dpdk-net-device.cc	2023-05-04 01:26:27.409412900 +0700
+@@ -155,7 +155,7 @@
+             continue;
+         }
+         /* clear allPortsUp flag if any link down */
+-        if (link.link_status == ETH_LINK_DOWN)
++        if (link.link_status == RTE_ETH_LINK_DOWN)
+         {
+             allPortsUp = 0;
+             break;
+@@ -315,9 +315,8 @@
+     NS_LOG_INFO("Initialize port");
+     static struct rte_eth_conf portConf = {};
+     portConf.rxmode = {};
+-    portConf.rxmode.split_hdr_size = 0;
+     portConf.txmode = {};
+-    portConf.txmode.mq_mode = ETH_MQ_TX_NONE;
++    portConf.txmode.mq_mode = RTE_ETH_MQ_TX_NONE;
+ 
+     struct rte_eth_rxconf reqConf;
+     struct rte_eth_txconf txqConf;
+@@ -326,9 +325,9 @@
+ 
+     fflush(stdout);
+     rte_eth_dev_info_get(m_portId, &devInfo);
+-    if (devInfo.tx_offload_capa & DEV_TX_OFFLOAD_MBUF_FAST_FREE)
++    if (devInfo.tx_offload_capa & RTE_ETH_TX_OFFLOAD_MBUF_FAST_FREE)
+     {
+-        localPortConf.txmode.offloads |= DEV_TX_OFFLOAD_MBUF_FAST_FREE;
++        localPortConf.txmode.offloads |= RTE_ETH_TX_OFFLOAD_MBUF_FAST_FREE;
+     }
+     ret = rte_eth_dev_configure(m_portId, 1, 1, &localPortConf);
+     if (ret < 0)
+@@ -401,7 +400,7 @@
+     CheckAllPortsLinkStatus();
+ 
+     NS_LOG_INFO("Launching core threads");
+-    rte_eal_mp_remote_launch(LaunchCore, this, CALL_MASTER);
++    rte_eal_mp_remote_launch(LaunchCore, this, CALL_MAIN);
+ }
+ 
+ uint8_t*
